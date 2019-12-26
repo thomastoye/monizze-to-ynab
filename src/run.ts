@@ -1,28 +1,30 @@
 #!/usr/bin/env ts-node
 import * as yargs from 'yargs'
 import { createObjectCsvStringifier } from 'csv-writer'
-import { load, parse } from '.'
-import { readFileSync } from 'fs'
+import { parse } from '.'
+import { getAllTransactions } from './get'
 
 interface Arguments {
-    file: string
+    token: string
 }
 
 const argv: Arguments = yargs.options({
-    file: { type: 'string', demandOption: true, description: 'JSON file containing Monizze input. Get this from https://happy.monizze.be/api/services/my-monizze/voucher/history' },
-}).argv
+    token: { type: 'string', demandOption: true, description: 'Token from the Monizze API. Found in your Monizze.be cookies or X-Token when a request is made.' },
+}).argv;
 
-const input = readFileSync(argv.file).toString()
-
-const csvStringifier = createObjectCsvStringifier({
-    header: [
-        { id: 'date', title: 'Date' },
-        { id: 'payee', title: 'Payee' },
-        { id: 'memo', title: 'Memo' },
-        { id: 'amount', title: 'Amount' },
-    ]
-})
-
-const toLog = csvStringifier.getHeaderString() + csvStringifier.stringifyRecords([ ...parse(load(input)) ])
-
-console.log(toLog)
+(async () => {
+    const input = await getAllTransactions(argv.token)
+    
+    const csvStringifier = createObjectCsvStringifier({
+        header: [
+            { id: 'date', title: 'Date' },
+            { id: 'payee', title: 'Payee' },
+            { id: 'memo', title: 'Memo' },
+            { id: 'amount', title: 'Amount' },
+        ]
+    })
+    
+    const toLog = csvStringifier.getHeaderString() + csvStringifier.stringifyRecords([ ...parse(input) ])
+    
+    console.log(toLog)
+})();

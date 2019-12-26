@@ -14,12 +14,6 @@ export type Transaction = {
     detail: string
 }
 
-export type ResponseStructure = {
-    data: {
-        emv: readonly Transaction[]
-    }
-}
-
 export type OutputLine = {
     /** Format? Not in YNAB's doc. Assumed to be mm/dd/yyyy */
     date: string
@@ -28,13 +22,8 @@ export type OutputLine = {
     amount: number
 }
 
-export const load = (input: string): ResponseStructure => {
-    // TODO should confirm structure with io-ts or similar
-    return JSON.parse(input)
-}
-
-export const parse = (response: ResponseStructure): readonly OutputLine[] => {
-    return response.data.emv.map(transaction => {
+export const parse = (transactions: readonly Transaction[]): readonly OutputLine[] => {
+    return transactions.map(transaction => {
         return {
             date: format(zonedTimeToUtc(transaction.date, TIMEZONE), 'yyyy-MM-dd'),
             payee: transaction.detail,
