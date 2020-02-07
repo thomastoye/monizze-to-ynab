@@ -27,7 +27,7 @@ const argv: Arguments = yargs.options({
         process.exit(1)
     } else {
         console.error('Getting token from Monizze by logging in...')
-        const automaticToken = await getToken(process.env.MONIZZE_EMAIL, process.env.MONIZZE_PASSWORD, false)
+        const automaticToken = await getToken(process.env.MONIZZE_EMAIL, process.env.MONIZZE_PASSWORD)
 
         if (automaticToken == null) {
             console.error('Could not get token from Monizze automatically!')
