@@ -4,8 +4,24 @@ Import Monizze transactions to YNAB.
 
 ## How to use
 
-1. Clone this repo
-1. Run `yarn`
-1. Get a token from Monizze. You can do this by logging in and inspecting the network panel. The token is sent with the `X-Token` header to the API. Alternatively, get it from the cookies.
-1. Run `src/run.ts --token=eyJpd... > output.csv`
-1. Import `output.csv` in YNAB
+```
+# Clone the repo
+$ git clone https://github.com/thomastoye/monizze-to-ynab.git
+
+# Install dependencies
+$ yarn
+
+# Option 1: Get a token yourself 
+$ ./src/runts --token=eyJpd... > output.csv
+
+# Option 2: Automatically get a token
+#           You can use a .env file
+$ MONIZZE_EMAIL=me@example.org MONIZZE_PASSWORD=very-secure ./src/run.ts > output.csv
+
+```
+
+Now you can import `output.csv` in YNAB.
+
+## Getting a token yourself
+
+If you don't want to provide your username and password to an untrusted script, you can provide an existing token. You can do this by [logging in on Monizze](https://my.monizze.be/nl/login/) and inspecting the network panel. The token is sent with the `X-Token` header to the API.
