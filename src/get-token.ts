@@ -1,7 +1,7 @@
 import * as puppeteer from "puppeteer";
 
 export const getToken = async (username: string, password: string, headless = true): Promise<string | undefined> => {
-    console.error('Launching puppeter...')
+    console.error('Launching puppeteer...')
 
     const browser = await puppeteer.launch({ headless });
     const page = await browser.newPage();
