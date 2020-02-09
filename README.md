@@ -12,11 +12,11 @@ $ git clone https://github.com/thomastoye/monizze-to-ynab.git
 $ yarn
 
 # Option 1: Get a token yourself 
-$ ./src/runts --token=eyJpd... > output.csv
+$ yarn --silent start --token=eyJpd... > output.csv
 
 # Option 2: Automatically get a token
 #           You can use a .env file
-$ MONIZZE_EMAIL=me@example.org MONIZZE_PASSWORD=very-secure ./src/run.ts > output.csv
+$ MONIZZE_EMAIL=me@example.org MONIZZE_PASSWORD=very-secure yarn --silent start > output.csv
 
 ```
 
