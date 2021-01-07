@@ -55,7 +55,7 @@ export const importToYnab = async (
   transactions: readonly Transaction[],
   ynab: YnabDetails
 ) => {
-  console.error(`Import ${transactions.length} transactions into YNAB...`)
+  console.error(`Importing ${transactions.length} transactions into YNAB...`)
   const ynabAPI = new API(ynab.accessToken)
 
   try {
@@ -70,6 +70,6 @@ export const importToYnab = async (
       })),
     })
   } catch (err) {
-    console.error('Error while import transactions to YNAB', err)
+    console.error('Error while importing transactions to YNAB', err)
   }
 }
