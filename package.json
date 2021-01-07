@@ -14,7 +14,7 @@
   "devDependencies": {
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.20",
-    "@types/puppeteer": "^2.0.0",
+    "@types/puppeteer": "^5.4.2",
     "husky": "^4.3.7",
     "jest": "^26.6.3",
     "lint-staged": "^10.5.3",
@@ -30,8 +30,8 @@
     "dotenv": "^8.2.0",
     "got": "^11.8.1",
     "p-retry": "^4.2.0",
-    "puppeteer": "^2.1.1",
-    "yargs": "^15.0.2",
+    "puppeteer": "^5.5.0",
+    "yargs": "^16.2.0",
     "ynab": "^1.21.0"
   },
   "husky": {
