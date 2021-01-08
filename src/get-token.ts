@@ -40,7 +40,7 @@ export const getToken = async (
   console.error('Closing browser...')
   await browser.close()
 
-  console.error(`Done. Got token ${token}`)
+  console.error(`Done. Got token ${token.slice(0, 20)}...`)
 
   return token
 }
