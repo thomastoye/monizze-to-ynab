@@ -14,8 +14,8 @@ export const getToken = async (
   console.error('Opening Monizze login...')
   await page.goto('https://my.monizze.be/nl/login/')
 
-  await page.waitFor('input[name=password]')
-  await page.waitFor('input[name=email')
+  await page.waitForSelector('input[name=password]')
+  await page.waitForSelector('input[name=email')
 
   await page.$eval(
     'input[name=password]',
