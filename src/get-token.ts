@@ -7,7 +7,8 @@ export const getToken = async (
 ): Promise<string | undefined> => {
   console.error('Launching puppeteer...')
 
-  const browser = await puppeteer.launch({ headless })
+  // --no-sandbox required for running on Cloud Functions
+  const browser = await puppeteer.launch({ headless, args: ['--no-sandbox'] })
   const page = await browser.newPage()
 
   console.error('Opening Monizze login...')

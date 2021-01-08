@@ -1,5 +1,5 @@
 import got, { CancelableRequest } from 'got'
-import { Transaction } from '.'
+import { Transaction } from './types'
 import pRetry from 'p-retry'
 import { zonedTimeToUtc } from 'date-fns-tz'
 

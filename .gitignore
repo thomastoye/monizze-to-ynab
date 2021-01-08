@@ -106,3 +106,8 @@ dist
 output.csv
 
 .env
+
+terraform/.terraform
+monizze-to-ynab-terraform-key.json
+deploy/
+terraform/terraform.tfvars.json

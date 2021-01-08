@@ -38,3 +38,15 @@ If you don't want to provide your username and password to an untrusted script, 
 ## Getting a YNAB access token
 
 You can create a YNAB access token [here](https://app.youneedabudget.com/settings/developer).
+
+## Deployment as a Google Cloud Function
+
+This repo includes Terraform configuration to deploy as a Terraform function
+
+Either run `gcloud auth application-default login` or set `GOOGLE_PROJECT` and `GOOGLE_APPLICATION_CREDENTIALS`.
+
+Create `terraform/terraform.tfvars.json`.
+
+Run `yarn deploy`.
+
+Trigger the PubSub queue: `gcloud pubsub topics publish projects/.../topics/trigger-monizze-to-ynab-import --message='{}'`

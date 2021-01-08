@@ -4,7 +4,6 @@ config()
 
 import * as yargs from 'yargs'
 import { createObjectCsvStringifier } from 'csv-writer'
-import { parse } from '.'
 import { getAllTransactions } from './get'
 import { getToken } from './get-token'
 import {
@@ -13,6 +12,7 @@ import {
   printAvailableAccounts,
   printAvailableBudgets,
 } from './ynab'
+import { parse } from './parse-transactions-to-csv-lines'
 
 interface Arguments {
   token?: string

@@ -1,6 +1,6 @@
 import { format } from 'date-fns'
 import { API, TransactionDetail } from 'ynab'
-import { Transaction } from '.'
+import { Transaction } from './types'
 
 type YnabDetails = {
   accessToken: string

@@ -8,10 +8,14 @@
   "license": "MIT",
   "scripts": {
     "build": "yarn run tsc",
+    "create-deployment-dir": "yarn build && rm -rf deploy && mkdir deploy && cp -r dist/ package.json yarn.lock deploy/",
+    "deploy": "yarn create-deployment-dir && cd terraform && terraform apply",
     "test": "yarn jest",
     "start": "./src/run.ts"
   },
   "devDependencies": {
+    "@google-cloud/functions-framework": "^1.7.1",
+    "@types/express": "^4.17.9",
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.20",
     "@types/puppeteer": "^5.4.2",
@@ -36,7 +40,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged && cd terraform && terraform fmt"
     }
   },
   "lint-staged": {

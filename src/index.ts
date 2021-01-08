@@ -1,35 +1,48 @@
-import { format } from 'date-fns'
-import { zonedTimeToUtc } from 'date-fns-tz'
+import type { EventFunction } from '@google-cloud/functions-framework/build/src/functions'
+import { getAllTransactions } from './get'
+import { getToken } from './get-token'
+import { getLastReconciliationDate, importToYnab } from './ynab'
 
-const TIMEZONE = 'Europe/Brussels'
+const budgetId = process.env.YNAB_BUDGET_ID
+const accountId = process.env.YNAB_ACCOUNT_ID
+const accessToken = process.env.YNAB_PERSONAL_ACCESS_TOKEN
+const monizzeEmail = process.env.MONIZZE_EMAIL
+const monizzePassword = process.env.MONIZZE_PASSWORD
 
-export type Transaction = {
-  /** E.g. -7.73 */
-  amount: number
-
-  date: Date
-
-  /** E.g. EXPRESS GENT ST LIEVENSPOGENT BE */
-  detail: string
+if (
+  budgetId == null ||
+  accountId == null ||
+  accessToken == null ||
+  monizzeEmail == null ||
+  monizzePassword == null
+) {
+  throw new Error('Not all necessary env vars are set')
 }
 
-export type OutputLine = {
-  /** Format? Not in YNAB's doc. Assumed to be mm/dd/yyyy */
-  date: string
-  payee: string
-  memo: string
-  amount: number
-}
+export const moduleEntryPoint: EventFunction = async () => {
+  const lastReconciliationDate = await getLastReconciliationDate({
+    accessToken,
+    accountId,
+    budgetId,
+  })
+  console.log(
+    `Last reconciliation date: ${lastReconciliationDate}. Returning transactions on or after that date...`
+  )
 
-export const parse = (
-  transactions: readonly Transaction[]
-): readonly OutputLine[] => {
-  return transactions.map((transaction) => {
-    return {
-      date: format(zonedTimeToUtc(transaction.date, TIMEZONE), 'yyyy-MM-dd'),
-      payee: transaction.detail,
-      memo: '',
-      amount: transaction.amount,
-    }
+  const token = await getToken(monizzeEmail, monizzePassword)
+  if (token == null) {
+    throw new Error('Monizze token was empty!')
+  }
+  console.log('Got a Monizze token')
+
+  const transactions = await getAllTransactions(
+    token,
+    lastReconciliationDate || undefined
+  )
+
+  await importToYnab(transactions, {
+    accessToken,
+    accountId,
+    budgetId,
   })
 }
