@@ -1,4 +1,3 @@
-
 locals {
   timestamp = formatdate("YYMMDDhhmmss", timestamp())
   root_dir  = abspath("../")
@@ -12,7 +11,8 @@ data "archive_file" "source" {
 }
 
 resource "google_storage_bucket" "bucket" {
-  name = "${var.project}-function"
+  project = var.project
+  name    = "${var.project}-function"
 }
 
 resource "google_storage_bucket_object" "zip" {
@@ -45,7 +45,16 @@ resource "google_project_service" "cb" {
   disable_on_destroy         = false
 }
 
+resource "google_project_service" "ae" {
+  project = var.project
+  service = "appengine.googleapis.com"
+
+  disable_dependent_services = true
+  disable_on_destroy         = false
+}
+
 resource "google_cloudfunctions_function" "function" {
+  project = var.project
   name    = var.function_name
   runtime = "nodejs14"
 
@@ -70,18 +79,26 @@ resource "google_cloudfunctions_function" "function" {
 }
 
 resource "google_pubsub_topic" "trigger_monizze_to_ynab_import" {
-  name = "trigger-monizze-to-ynab-import"
+  project = var.project
+  name    = "trigger-monizze-to-ynab-import"
 }
 
-# Can't create this without create an AppEngine app...
-# resource "google_cloud_scheduler_job" "job" {
-#   name        = "trigger_monizze_to_ynab_job"
-#   description = "Trigger Monizze to YNAB importer"
-#   schedule    = "0 12,13,19,21 * * *"
-#   region = var.region
+# Can't create a google_cloud_scheduler_job without a google_app_engine_application...
+resource "google_app_engine_application" "empty_app" {
+  project     = var.project
+  location_id = var.region
+}
 
-#   pubsub_target {
-#     topic_name = google_pubsub_topic.trigger_monizze_to_ynab_import.id
-#     data       = base64encode("{}")
-#   }
-# }
+resource "google_cloud_scheduler_job" "job" {
+  project     = var.project
+  region      = var.region
+  depends_on  = [google_app_engine_application.empty_app]
+  name        = "trigger_monizze_to_ynab_job"
+  description = "Trigger Monizze to YNAB importer"
+  schedule    = "0 12,13,19,21 * * *"
+
+  pubsub_target {
+    topic_name = google_pubsub_topic.trigger_monizze_to_ynab_import.id
+    data       = base64encode("{}")
+  }
+}

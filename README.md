@@ -50,3 +50,5 @@ Create `terraform/terraform.tfvars.json`.
 Run `yarn deploy`.
 
 Trigger the PubSub queue: `gcloud pubsub topics publish projects/.../topics/trigger-monizze-to-ynab-import --message='{}'`
+
+A Cloud Scheduler will also be set up to automatically import transactions every day (by default after lunch and in the evening for my time zone).
