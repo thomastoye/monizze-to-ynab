@@ -8,7 +8,5 @@ test('parse old style input', () => {
 })
 
 test('parse new style input', () => {
-  expect(
-    parse(JSON.parse(exampleNewInput).data.emv, 'Some Company NV')
-  ).toMatchSnapshot()
+  expect(parse(JSON.parse(exampleNewInput).data.emv)).toMatchSnapshot()
 })
