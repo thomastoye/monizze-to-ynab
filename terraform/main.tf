@@ -53,6 +53,14 @@ resource "google_project_service" "ae" {
   disable_on_destroy         = false
 }
 
+resource "google_project_service" "crm" {
+  project = var.project
+  service = "cloudresourcemanager.googleapis.com"
+
+  disable_dependent_services = true
+  disable_on_destroy         = false
+}
+
 resource "google_cloudfunctions_function" "function" {
   project = var.project
   name    = var.function_name
@@ -75,6 +83,7 @@ resource "google_cloudfunctions_function" "function" {
     "YNAB_PERSONAL_ACCESS_TOKEN" = var.ynab_personal_access_token
     "YNAB_BUDGET_ID"             = var.ynab_budget_id
     "YNAB_ACCOUNT_ID"            = var.ynab_account_id
+    "ISSUING_COMPANY_NAME"       = var.issuing_company_name
   }
 }
 

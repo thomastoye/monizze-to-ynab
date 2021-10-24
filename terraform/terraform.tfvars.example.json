@@ -3,5 +3,6 @@
   "monizze_password": "...",
   "ynab_personal_access_token": "...",
   "ynab_budget_id": "...",
-  "ynab_account_id": "..."
+  "ynab_account_id": "...",
+  "issuing_company_name": "..."
 }

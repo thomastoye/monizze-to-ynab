@@ -43,6 +43,7 @@ const getYnabDetails = async () => {
       budgetId,
       accountId,
       accessToken,
+      issuingCompanyName: process.env.ISSUING_COMPANY_NAME,
     }
   } else if (accessToken == null) {
     console.error(

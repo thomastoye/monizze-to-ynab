@@ -1,11 +1,19 @@
 import { format } from 'date-fns'
 import { API, TransactionDetail } from 'ynab'
 import { Transaction } from './types'
+import {
+  capitalizeFirstLetterOfEachWord,
+  removeMonizzePrefix,
+  replaceIssuingCompanyName,
+} from './clean-payee'
+
+const IMPORT_ID_VERSION = 'v2' // Raise this when changing the format of e.g. the payee name
 
 type YnabDetails = {
   accessToken: string
   budgetId: string
   accountId: string
+  issuingCompanyName?: string
 }
 
 export const printAvailableBudgets = async (accessToken: string) => {
@@ -62,10 +70,15 @@ export const importToYnab = async (
     await ynabAPI.transactions.createTransactions(ynab.budgetId, {
       transactions: transactions.map((transaction) => ({
         account_id: ynab.accountId,
-        import_id: `monizze:${transaction.date.getTime()}`,
+        import_id: `monizze:${IMPORT_ID_VERSION}${transaction.date.getTime()}`,
         date: format(transaction.date, 'yyyy-MM-dd'),
         amount: transaction.amount * 1000,
-        payee_name: transaction.detail,
+        payee_name: capitalizeFirstLetterOfEachWord(
+          replaceIssuingCompanyName(
+            removeMonizzePrefix(transaction.detail),
+            ynab.issuingCompanyName
+          )
+        ),
         cleared: TransactionDetail.ClearedEnum.Cleared,
       })),
     })

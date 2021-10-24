@@ -8,6 +8,7 @@ const accountId = process.env.YNAB_ACCOUNT_ID
 const accessToken = process.env.YNAB_PERSONAL_ACCESS_TOKEN
 const monizzeEmail = process.env.MONIZZE_EMAIL
 const monizzePassword = process.env.MONIZZE_PASSWORD
+const issuingCompanyName = process.env.ISSUING_COMPANY_NAME
 
 if (
   budgetId == null ||
@@ -44,5 +45,6 @@ export const moduleEntryPoint: EventFunction = async () => {
     accessToken,
     accountId,
     budgetId,
+    issuingCompanyName,
   })
 }
