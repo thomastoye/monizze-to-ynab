@@ -43,7 +43,13 @@ You can create a YNAB access token [here](https://app.youneedabudget.com/setting
 
 This repo includes Terraform configuration to deploy as a Terraform function
 
-Either run `gcloud auth application-default login` or set `GOOGLE_PROJECT` and `GOOGLE_APPLICATION_CREDENTIALS`.
+Either run `gcloud auth application-default login` or set `GOOGLE_PROJECT` and `GOOGLE_APPLICATION_CREDENTIALS`:
+
+```
+$ export GOOGLE_APPLICATION_CREDENTIALS=`pwd`/monizze-to-ynab-terraform-key.json
+$ export GOOGLE_PROJECT=monizze-to-ynab
+$ export GCLOUD_PROJECT=monizze-to-ynab
+```
 
 Create `terraform/terraform.tfvars.json`.
 
