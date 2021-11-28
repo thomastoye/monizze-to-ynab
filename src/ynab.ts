@@ -72,7 +72,7 @@ export const importToYnab = async (
         account_id: ynab.accountId,
         import_id: `monizze:${IMPORT_ID_VERSION}${transaction.date.getTime()}`,
         date: format(transaction.date, 'yyyy-MM-dd'),
-        amount: transaction.amount * 1000,
+        amount: Math.round(transaction.amount * 1000),
         payee_name: capitalizeFirstLetterOfEachWord(
           replaceIssuingCompanyName(
             removeMonizzePrefix(transaction.detail),
